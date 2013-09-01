@@ -59,7 +59,7 @@ gem "activerecord"
 exec "pygments_worker.rb"
 
 # Merging models
-dir '../app/models/', "app"
+dir '../app/models/'
 
 
 full_remote_build true # Or remote
