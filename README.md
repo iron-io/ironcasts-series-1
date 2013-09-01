@@ -193,3 +193,129 @@ $ iron_worker upload pygments
 ``` $ iron_worker upload pygments ``` it looks for a pygments.worker file in your current directory
 
 In this post, we will explain the directory structure after you upload iron_worker and how to write a rake task for deployment
+
+
+
+One of the frequent questions, we get asked at Iron.io is how to get your workers to write back to the database, especially in development. Today, we are going to show how to go about this in 3 easy steps.
+
+Connecting to a database with IronWorker is just like any other app. The only difference is that a worker on EC2 needs an open port to your database, and your database credentials. So no matter what language or framework, those are the two small requirements in order for your workers to connect to your cloud hosted DB.
+
+As an example, we would like to demonstrate how to do it in Rails
+
+#### Step 1, Set up a <a href="https://postgres.heroku.com/blog/past/2012/4/26/heroku_postgres_development_plan/">Free Heroku Dev Database</a>
+It is important that you use a cloud hosted development database (instead of a local development database) because the workers are hosted on cloud and they need to be able to write back to a publicly accessable address
+
+Once you setup a dev database, you can use the cli commmand
+
+```
+heroku pg:credentials [YOUR_HEROKU_DEV_DATABASE_COLOR]
+#=> dbname=d2f7659b2far3j host=ec2-107-20-145-44.compute-1.amazonaws.com port=5432 user=tsgndzzhtfqmld password=K9xCdvmswZb_-P4gO-bwgzEagk sslmode=require
+```
+
+
+
+#### Step 2, Fill out the ``` config/database.yml ``` credentials so that you are using the heroku database:
+
+Now you should see this
+
+```yml
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: d2f7659b2far3j
+  pool: 5
+  username: tsgndzzhtfqmld
+  password: K9xCdvmswZb_-P4gO-bwgzEagk
+  host: ec2-107-20-145-44.compute-1.amazonaws.com
+  sslmode: require
+  port: 5432
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: iron-worker-101_test
+  pool: 5
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: iron-worker-101_production
+  pool: 5
+```
+
+Once you have done that, use
+```ruby
+Rails.configuration.database_configuration
+```
+anywhere in your Rails application will return a nested hash. With the runtime environment as the key (either production, development, test, staging or any other environment that you denote) and then pointing the various database credentials options.
+
+
+```ruby
+Rails.configuration.database_configuration
+#=>
+{
+  "development"=>
+        {"adapter"=>"postgresql",
+         "encoding"=>"unicode",
+         "database"=>"d2f7589b2far3j",
+         "pool"=>5,
+         "username"=>"tsgndzdhtfqmld",
+         "password"=>"K9xCvvmswZb_-P4gO-bwgzEagk",
+         "host"=>"ec2-106-20-165-44.compute-1.amazonaws.com",
+         "sslmode"=>"require",
+         "port"=>5432},
+  "test"=>
+        {"adapter"=>"postgresql",
+         "encoding"=>"unicode",
+         "database"=>"iron-worker-101_test",
+         "pool"=>5},
+  "production"=>
+        {"adapter"=>"postgresql",
+         "encoding"=>"unicode",
+         "database"=>"iron-worker-101_production",
+         "pool"=>5}
+}
+```
+
+
+#### Step 3, Make a database connection using the credentials
+
+In order for ActiveRecord to make a connection to any particular database. It requires the database credentials which comes from the previous command.
+
+Essential in order to establish an connection, you will use the following method.
+
+```ruby
+ActiveRecord::Base.establish_connection({"adapter"=>"postgresql",
+                                         "encoding"=>"unicode",
+                                         "database"=>"d2f7589b2far3j",
+                                         "pool"=>5,
+                                         "username"=>"tsgndzdhtfqmld",
+                                         "password"=>"K9xCvvmswZb_-P4gO-bwgzEagk",
+                                         "host"=>"ec2-106-20-165-44.compute-1.amazonaws.com",
+                                         "sslmode"=>"require",
+                                         "port"=>5432})
+```
+
+So, if you send ```params: { "database" => Rails.configuration.database_configuration[Rails.env] } ``` as params into IronWorker. Then, you should see this:
+
+``` workers/iron_worker.rb ```
+
+```ruby
+require 'pg'
+require 'active_record'
+require 'models/user'
+
+def setup_database
+  puts "Database connection details:#{params['database'].inspect}"
+  return unless params['database']
+  # estabilsh database connection
+  ActiveRecord::Base.establish_connection(params['database'])
+end
+
+setup_database # At this point you have already connected to the database and can make any activerecord query
+users = User.all
+p users
+```
+
+
+Now your workers are connected to the database! You can use ActiveRecord the same way as anywhere else in your Rails Application!
