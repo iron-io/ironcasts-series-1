@@ -71,5 +71,5 @@ full_remote_build true # Or remote
 cd workers
 iron_worker upload pygments 
 ```
-iron_worker upload [WORKER NAME] looks for an iron.json where you iron.io credentials should be stored. Therefore, if you stored your iron.json in your workers folder, you should first cd into that folder.
+```iron_worker upload [WORKER NAME]``` looks for an iron.json where you iron.io credentials should be stored. Therefore, if you stored your iron.json in your workers folder, you should first cd into that folder.
 [WORKER NAME] is the file name of the .worker file - in this case pygments.worker
