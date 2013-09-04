@@ -1,7 +1,7 @@
-How to rapidly prototype with iron workers locally
+How to rapidly prototype with IronWorker locally
 ====
 
-One of the questions, we often get asked is how to develop with iron workers locally without having to continuously upload the workers.
+One of the questions, we often get asked is how to develop with IronWorker locally without having to continuously upload the workers.
 
 In this blog post, we will explore the workflow for an application written in Ruby using the Rails framework.
 
