@@ -9,6 +9,9 @@ Welcome to IronCast. This repository holds all relevant code to IronCast series 
 #### IronCast Series 1 Blogs
 
 IronCast Episode 1 - [Introduction to IronWorker](http://blog.iron.io/)
+
 IronCast Episode 2 - What is a dotworker file?
+
 IronCast Episode 3 - How to rapidly prototype locally with IronWorker?
+
 IronCast Episode 4 - How to connect to a cloud hosted dev database with IronWorker?
