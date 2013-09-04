@@ -1,3 +1,6 @@
 [submodule "iron-worker-101"]
 	path = iron-worker-101
 	url = https://github.com/sidazhang/iron-worker-101.git
+[submodule "ironcasts-series-1-samplecode"]
+	path = ironcasts-series-1-samplecode
+	url = https://github.com/iron-io/ironcasts-series-1-samplecode
