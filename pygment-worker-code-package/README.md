@@ -1,9 +1,9 @@
 README
 ======
 
-This is the code package for the pygments worker from the <a href="https://github.com/sidazhang/iron-worker-101">iron-worker-101 repository</a>. 
+This is the code package for the pygments worker from the <a href="https://github.com/iron-io/ironcasts-series-1-samplecode">sample repository</a>. 
 
-You can find the .worker file <a href="https://github.com/sidazhang/iron-worker-101/blob/master/workers/pygments.worker">here</a>.
+You can find the .worker file <a href="https://github.com/iron-io/ironcasts-series-1-samplecode/blob/master/workers/pygments.worker">here</a>.
 
 ```ruby
 runtime "ruby"
