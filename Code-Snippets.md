@@ -73,3 +73,24 @@ iron_worker upload pygments
 ```
 ```iron_worker upload [WORKER NAME]``` looks for an iron.json where you iron.io credentials should be stored. Therefore, if you stored your iron.json in your workers folder, you should first cd into that folder.
 [WORKER NAME] is the file name of the .worker file - in this case pygments.worker
+
+
+### IronCast 2:
+
+##### Example worker file
+```ruby
+runtime "ruby"
+
+# include postgresql and activerecord
+gem "pg"
+gem "activerecord"
+
+
+exec "pygments_worker.rb"
+
+# Merging models
+dir '../app/models/'
+
+
+remote
+```
