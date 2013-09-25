@@ -37,7 +37,7 @@ snippet = Snippet.where(:id => params["snippet_id"]).first
 snippet.update_attribute(:highlighted_code, request.body)
 ```
 
-```ruby 
+```ruby
 def setup_database
   puts "Database connection details:#{params['database'].inspect}"
   return unless params['database']
@@ -69,7 +69,7 @@ full_remote_build true # Or remote
 ##### Upload to the cloud
 ```
 cd workers
-iron_worker upload pygments 
+iron_worker upload pygments
 ```
 ```iron_worker upload [WORKER NAME]``` looks for an iron.json where you iron.io credentials should be stored. Therefore, if you stored your iron.json in your workers folder, you should first cd into that folder.
 [WORKER NAME] is the file name of the .worker file - in this case pygments.worker
@@ -93,4 +93,14 @@ dir '../app/models/'
 
 
 remote
+```
+
+### IronCast 3:
+##### Example Python Code
+```python
+def setup_env():
+  for i in range(len(sys.argv)]:
+    if sys.argv[i] == '-id':
+      return
+  # Do all your environment setup stuff here
 ```
