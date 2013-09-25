@@ -104,3 +104,27 @@ def setup_env():
       return
   # Do all your environment setup stuff here
 ```
+
+
+##### Example Ruby Code
+
+```ruby
+require_relative "./development/pygments_worker_dev.rb" unless ARGV.include?("-id")
+
+```
+
+```ruby
+$LOAD_PATH.unshift(File.expand_path('../../../app/', __FILE__))
+
+def database_config
+  YAML.load(File.open(File.expand_path('../../../config/database.yml', __FILE__)))
+end
+
+def params
+  {
+    "database" => database_config["development"],
+    "request" => {"lang" => "ruby", "code" => "def hello\n puts 'hello'\n end"},
+    "snippet_id" => 1
+  }
+end
+```
