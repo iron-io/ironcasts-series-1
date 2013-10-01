@@ -138,3 +138,20 @@ end
 heroku addons:add heroku-postgresql:dev
 heroku pg:credentials [COLOR OF YOUR DATABASE]
 ```
+
+```
+Connection info string:
+   "dbname=d2fxxxxxxfar3j host=ec2-xxx-xx-165-44.compute-1.amazonaws.com port=5432 user=xxxxxxxxx password=xxxxxxxxxx sslmode=require"
+```
+
+```ruby
+ActiveRecord::Base.establish_connection({
+  "adapter" => "postgresql",
+  "database" => "d2fxxxxxxfar3j",
+  "host" => "ec2-xxx-xx-165-44.compute-1.amazonaws.com",
+  "port" => 5432,
+  "username" => "xxxxxxxxx",
+  "password" => "xxxxxxxxxx",
+  "sslmode" => "require"
+})
+```
