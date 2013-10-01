@@ -128,3 +128,13 @@ def params
   }
 end
 ```
+
+
+### IronCast 4:
+
+##### Connecting to your database
+
+```
+heroku addons:add heroku-postgresql:dev
+heroku pg:credentials [COLOR OF YOUR DATABASE]
+```
