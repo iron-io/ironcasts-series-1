@@ -155,3 +155,30 @@ ActiveRecord::Base.establish_connection({
   "sslmode" => "require"
 })
 ```
+
+
+```ruby
+def create
+  @snippet = Snippet.new(snippet_params)
+  if @snippet.save
+    @client ||= IronWorkerNG::Client.new(:token => ENV["TOKEN"], :project_id => ENV["PROJECT_ID"])
+    @client.tasks.create("pygments",
+                         "database" => Rails.configuration.database_configuration[Rails.env],
+                         "request" => {"lang" => @snippet.language,
+                                       "code" => @snippet.plain_code},
+                         "snippet_id" => @snippet.id)
+    redirect_to @snippet
+  else
+    render :new
+  end
+end
+```
+
+```ruby
+def setup_database
+  puts "Database connection details:#{params['database'].inspect}"
+  return unless params['database']
+  # estabilsh database connection
+  ActiveRecord::Base.establish_connection(params['database'])
+end
+```
